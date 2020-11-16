@@ -5,15 +5,3 @@
 target : 
 	echo "compiling my application"
 	gcc -Wall -g lab02es01.c -o lab02es01exe
-
-
-install : target
-	mkdir bin
-	mv lab02es01exe ./bin
-
-
-clean : 
-	rm -f *.o
-
-distclean : clean
-	rm -R ./bin
