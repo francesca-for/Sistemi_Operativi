@@ -3,55 +3,74 @@
 #include <string.h>
 #include <dirent.h>
 #include <sys/stat.h>
+#include <unistd.h>
 #include <sys/types.h>
-#define MAXLENGHT 100
-// Path direcctory di prova -> /Users/fornasierarmando/Desktop/DirectoryProvaSO
 
-void show_directory(const char path[], char fill[]);
+#include <limits.h>
+#include <errno.h>
+#include <stdarg.h>
 
+#define MAXLENGHT 300
+// Path directory di prova -> /Users/fornasierarmando/Desktop/DirectoryProvaSO
+
+void visit_directory(const char path[], char fill[]);
 
 int main(int argc, const char * argv[]) {
-     if (argc!=2) {
-          fprintf(stderr, "Error: expected programExe directoryPath\n");
-          exit(1);
-     }
-     show_directory(argv[1], "");
-     return 0;
+    if (argc!=2) {
+        fprintf(stderr, "Error: expected prgm <pathName>\n");
+        exit(1);
+    }
+    visit_directory(argv[1], "");
+    return 0;
 }
 
 
-void show_directory(const char path[], char fill[]) {
-     struct stat sb;
-     struct dirent *dirp;
-     DIR *dp;
-     char new_path[MAXLENGHT];
-     char new_fill[MAXLENGHT];
+void visit_directory(const char path[], char fill[]) {
+    struct stat statbuffer;
+    struct dirent *dirp;
+    DIR *dp;
+    char new_path[MAXLENGHT];
+    char new_fill[MAXLENGHT];
 
-     if ((dp = opendir(path)) == NULL){
-          fprintf(stderr, "Error opening directory %s\n", path);
-          exit(-1);
-     }
+    if(lstat(path, &statbuffer) < 0) {
+        fprintf (stderr, "Error running lstat on %s\n", path);
+        exit (1);
+    }
 
-     while ((dirp = readdir(dp)) != NULL){
-          if (stat(path, &sb) < 0) {
-               fprintf(stderr, "Error\n");
-          }
-          if (S_ISREG(sb.st_mode)){
-               printf("File: %s\n", dirp->d_name);
-          }
-          else if (S_ISDIR(sb.st_mode)) {
-               if(!strcmp("/.", dirp->d_name) || !strcmp("/..", dirp->d_name)){
-                    printf("Directory: %s\n", dirp->d_name);
-               }
-               else {
-                    printf("Directory: %s\n", dirp->d_name);
-                    sprintf(new_path, "%s%s", path, dirp->d_name);
-                    sprintf(new_fill, "%s%s", fill, "   ");
-                    show_directory(new_path, new_fill);
-               }
-          }
-     }
-     closedir(dp);
+    if (!S_ISDIR(statbuffer.st_mode)) {  // FILE
+        return;
+    }
 
-     return;
+    if ((dp = opendir(path)) == NULL) {  // DIRECTORY
+        fprintf(stderr, "Error opening directory %s\n", path);
+        exit(-1);
+    }
+
+    while ((dirp = readdir(dp)) != NULL){
+        sprintf(new_path, "%s%s%s", path, "/", dirp->d_name);
+
+        if (lstat(new_path, &statbuffer) < 0) {
+            fprintf(stderr, "Error running lstat on %s\n", new_path);
+        }
+
+        if (!S_ISDIR(statbuffer.st_mode)){
+            printf("%sFile: %s\n", fill, dirp->d_name);
+        }
+        else {
+            if(!strcmp(".", dirp->d_name) || !strcmp("..", dirp->d_name)){
+                continue;
+            }
+            else {
+                printf("%sDirectory: %s\n", fill, dirp->d_name);
+                sprintf(new_fill, "%s%s", fill, "     ");
+                visit_directory(new_path, new_fill);
+            }
+        }
+    }
+    if(closedir(dp)<0){
+        fprintf(stderr, "Error closing directory %s", dirp->d_name);
+        exit(-1);
+    }
+
+    return;
 }
