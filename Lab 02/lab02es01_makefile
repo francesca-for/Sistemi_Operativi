@@ -2,6 +2,25 @@
 # Makefile
 #
 
-target : 
+CC = gcc
+C_FLAGS = -Wall -g
+FILENAME_C = lab02es01.c
+FILE_EXE = lab02es01exe
+
+
+target :
 	echo "compiling my application"
-	gcc -Wall -g lab02es01.c -o lab02es01exe
+	$(CC) $(C_FLAGS) $(FILENAME_C) -o $(FILE_EXE)
+
+
+install : target
+	mkdir bin
+	mv $(FILE_EXE) ./bin/
+
+
+clean :
+	rm -f *.o
+
+
+distclean : clean
+	rm -R ./bin
