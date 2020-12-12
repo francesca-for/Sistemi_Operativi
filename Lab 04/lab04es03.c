@@ -7,7 +7,8 @@
 
 int main(int argc, const char *argv[]){
      //char endCmd[] = "end";
-     char line[MAX_PRMT*LEN_PRMT+1], cmd[MAX_PRMT*LEN_PRMT-3], **commands;
+     char line[MAX_PRMT*LEN_PRMT+1], **commands;
+     //char cmd[MAX_PRMT*LEN_PRMT-3];
      FILE *fp;
 
      if (argc!=2) {
@@ -24,14 +25,52 @@ int main(int argc, const char *argv[]){
      }
 
      setbuf(stdout, 0);
-     while (fgets(line, MAX_PRMT*LEN_PRMT+1, fp) != NULL){
-          //strcpy(line, "ls -laR end");           // per debug
-          fprintf(stdout, "%lu\n", strlen(line)-4);
-          strncpy(cmd, line, strlen(line)-4);
-          strcat(cmd, "\n");
+     /*while (fgets(line, MAX_PRMT*LEN_PRMT+1, fp) != NULL){
+          char cmd[MAX_PRMT*LEN_PRMT-3];
+          strcpy(line, "ls -laR end\n");           // per debug
+          fprintf(stdout, "%lu\n", strlen(line)-5);
+          //strncpy(cmd, line, strlen(line)-5);
+          strncpy(cmd, line, strlen(line)-5);
+          strcat(cmd, "-end\n");  // per debug
+          //strcat(cmd, "\0");  // per debug
           sleep(3);
           fprintf(stdout, "%s", cmd);
           system(cmd);
+     }*/
+
+     for(int i=0; i<4; i++){
+          char cmd[MAX_PRMT*LEN_PRMT-3];
+
+          if(i==0){
+            strcpy(line, "ls -laR end\n");           // per debug
+            fprintf(stdout, "\n%lu - ", strlen(line)-5);
+            //strncpy(cmd, line, strlen(line)-5);
+            strncpy(cmd, line, strlen(line)-5);
+          }
+          if(i==1){
+            strcpy(line, "less mioFile.c end\n");           // per debug
+            fprintf(stdout, "\n%lu - ", strlen(line)-5);
+            //strncpy(cmd, line, strlen(line)-5);
+            strncpy(cmd, line, strlen(line)-5);
+          }
+          if(i==2){
+            strcpy(line, "mkdir tmpDir end\n");           // per debug
+            fprintf(stdout, "\n%lu - ", strlen(line)-5);
+            //strncpy(cmd, line, strlen(line)-5);
+            strncpy(cmd, line, strlen(line)-5);
+          }
+          if(i==3){
+            strcpy(line, "cp mioFile.c tmpDir end\n");           // per debug
+            fprintf(stdout, "\n%lu - ", strlen(line)-5);
+            //strncpy(cmd, line, strlen(line)-5);
+            strncpy(cmd, line, strlen(line)-5);
+          }
+
+            strcat(cmd, "\n");  // per debug
+          //strcat(cmd, "\0");  // per debug
+            sleep(3);
+            fprintf(stdout, "%s", cmd);
+            system(cmd);
 	}
 
      fclose(fp);
