@@ -15,12 +15,14 @@ tratti di codice.
 Indicare inoltre l'output prodotto su video.
 Verificare il risultato predetto tramite esecuzione.
 
+
 A.
 for (i=1; i<=2; i++) {
   if (!fork ())
     printf ("%d\n", i);
 }
 printf ("%d\n", i);
+
 
 B.
 for(i=3; i>1; i--) {
@@ -29,12 +31,14 @@ for(i=3; i>1; i--) {
 }
 printf ("%d\n", i);
 
+
 C.
 for (i=0; i<2; i++) {
-  if (fork ())
+  if (fork())
     fork ();
 }
 printf ("%d\n", i);
+
 
 D.
 for (i=2; i>=1; i--) {

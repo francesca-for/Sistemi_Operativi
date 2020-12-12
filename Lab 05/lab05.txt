@@ -1,7 +1,7 @@
 Laurea in Ingegneria Informatica
 Corso di Sistemi Operativi
 Esercizi proposti per il laboratorio
- 
+
 Esercitazione di laboratorio numero 05
 --------------------------------------
 
@@ -37,7 +37,7 @@ per effettuare le seguenti operazioni:
   qualsiasi direttorio, visualizzare il numero totale di
   stringhe nei file lab01.txt, lab02.txt, e lab03.txt
 - contare il numero di processi attivi sul sistema che hanno
-  come proprietario l'utente "root". (Suggerimento: si 
+  come proprietario l'utente "root". (Suggerimento: si
   ispezioni mediante il comando man, l'opzione -U del comando
   ps)
 
@@ -117,7 +117,7 @@ Osservazioni
        -> codifica binaria = sizeof (int) byte,
    - 12345 -> codifica ASCII = 5 caratteri
            -> codifica binaria = sizeof (int) byte
-   Inoltre nel primo caso occorrerebbe contare anche caratteri 
+   Inoltre nel primo caso occorrerebbe contare anche caratteri
    "aggiuntivi", quali il '\n' di fine riga.
 
 
@@ -164,4 +164,3 @@ Suggerimenti
 2) I processi che comunicano non sono padre e figlio ma due
    "fratelli"; quindi occorre fare in modo che ciascun
    figlio conosca il PID del processo "fratello".
-
