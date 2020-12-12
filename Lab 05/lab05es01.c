@@ -16,5 +16,7 @@ int main(int argc, const char* argv[]) {
           sleep(1);
      }while(num!=0);
 
+     // su terminale: ./lab05es01exe 0<inFile.txt 1>pariFile.txt 2>dispariFile.txt
+
      return 0;
 }
